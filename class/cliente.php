@@ -1,6 +1,6 @@
 <?php
 
-class Cliente{
+class Cliente {
     private $id;
     private $nome;
     private $telefone;
@@ -85,9 +85,9 @@ class Cliente{
 
     } public function getAlteracaoFuncionarioId(){
         return $this->alteracao_funcionario_id;
-    } public function getAlteracaoFuncionarioId(){
-        return $this->alteracao_funcionario_id;
+  
     }
+    
 }
 
 ?>

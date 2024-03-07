@@ -1,51 +1,102 @@
-<?php
+cliente[<?php
 
-class ClientesRepository implements Repository{
-    public static function listAll(){}
-    public static function get($id){
+class ClienteRepository implements repository
+{
+    public static function listAll(){
         $db = DB::getInstance();
 
-        $sql = "SELECT * FROM cliente";
+        $sql = "SELECT * from cliente";
 
         $query = $db->prepare($sql);
-        $query->bindParam(":id",$id);
         $query->execute();
 
         $list = array();
-        foreach($query->fetchAll(PDO::FETCH_OBJ) as $row){
+        foreach($query->fetchALL(PDO::FETCH_OBJ) as $row){
             $cliente = new Cliente;
-            $cliente-> setId($row->id);
-            $cliente-> setNome($row->nome);
-            $cliente-> setData_Inclusao($row->data_inclusao);
-            $cliente-> setData_Alteracao($row->data_alteracao);
-            $cliente-> setInclusao_Funcionario_Id($row->inclusao_funcionario_id);
-            $cliente-> setAlteracao_Funcionario_Id($row->alteracao_funcionario_id);
-
-            $list[] = $Cliente;
-
+            $cliente->setId($row->id);
+            $cliente->setNome($row->nome);
+            $cliente->setTelefone($row->telefone);
+            $cliente->setEmail($row->email);
+            $cliente->setCpf($row->cpf);
+            $cliente->setRg($row->rg);
+            $cliente->setDataNascimento($row->data_nascimento);
+            $cliente->setDataInclusao($row->data_inclusao);
+            $cliente->setDataAlteracao($row->data_alteracao);
+            $cliente->setInclusaoFuncionarioId($row->inclusao_funcionario_id);
+            $cliente->setAlteracaoFuncionarioId($row->alteracao_funcionario_id);
+            $list[] = $cliente;
         }
         return $list;
 
-        if($query->numRows() > 0 ){
-            $row = $query->fetch(PDO::FETCH_OBJ);
-            $autor = new Cliente;
-            $autor-> setId($row->id);
-            $autor-> setNome($row->nome);
-            $autor-> setData_Inclusao($row->data_inclusao);
-            $autor-> setData_Alteracao($row->data_alteracao);
-            $autor-> setInclusao_Funcionario_Id($row->inclusao_funcionario_id);
-            $autor-> setAlteracao_Funcionario_Id($row->alteracao_funcionario_id);
+    }
+    public static function get($id)
+    {
+        $db = DB::getInstance();
 
-            return $Cliente;
+        $sql = "SELECT * from cliente where id = :id";
+
+        $query = $db->prepare($sql);
+        $query->bindParam(":id", $id);
+        $query->execute();
+
+        if ($query->rowCount() > 0) {
+            $row = $query->fetch(PDO::FETCH_OBJ);
+
+            $cliente = new Cliente;
+            $cliente->setId($row->id);
+            $cliente->setNome($row->nome);
+            $cliente->setTelefone($row->telefone);
+            $cliente->setEmail($row->email);
+            $cliente->setCpf($row->cpf);
+            $cliente->setRg($row->rg);
+            $cliente->setDataNascimento($row->data_nascimento);
+            $cliente->setDataInclusao($row->data_inclusao);
+            $cliente->setDataAlteracao($row->data_alteracao);
+            $cliente->setInclusaoFuncionarioId($row->inclusao_funcionario_id);
+            $cliente->setAlteracaoFuncionarioId($row->alteracao_funcionario_id);
+
+            return $cliente;
         }
         return null;
     }
+    public static function insert($obj){
+        $db = DB::getInstance();
 
-    public static function insert($obj){}
-    public static function update($obj){}
-    public static function delete($obj){} 
-    
+        $sql = "INSERT INTO cliente (nome, telefone, email, cpf, rg, data_nascimento, data_inclusao, inclusao_funcionario_id) VALUES(:nome, :telefone, :email, :cpf, :rg, :data_nascimento, :data_inclusao, :inclusao_funcionario_id)";
+
+        $query = $db->prepare($sql);
+
+        $query->bindValue(":nome",$obj->getNome());
+        $query->bindValue(":telefone",$obj->getTelefone());
+        $query->bindValue(":email",$obj->getEmail());
+        $query->bindValue(":cpf",$obj->getCpf());
+        $query->bindValue(":rg",$obj->getRg());
+        $query->bindValue(":data_nascimento",$obj->getDataNascimento());
+        $query->bindValue(":data_inclusao",$obj->getDataInclusao());
+        $query->bindValue(":inclusao_funcionario_id",$obj->getInclusaoFuncionarioId());
+
+        $query->execute();
+
+        $id = $db->lastInsertId();
+
+        return $id;
+    }
+ 
+    public static function update($obj){
+        $db = DB::getInstance();
+
+        $sql = "UPDATE cliente SET nome = :nome, data_alteracao = :data_alteracao, alteracao_funcionario_id = :alteracao_funcionario_id Where id = :id";
+
+        $query = $db->prepare($sql);
+        $query->bindValue(":nome",$obj->getNome());
+        $query->bindValue(":data_alteracao",$obj->getDataAlteracao());
+        $query->bindValue(":alteracao_funcionario_id",$obj->getAlteracaoFuncionarioId());
+        $query->bindValue(":id",$obj->getId());
+        $query->execute();
+    }
+  
+    public static function delete($id){
+        
+    }
+
 }
-
-
-?>

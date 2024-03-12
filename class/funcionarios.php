@@ -49,8 +49,14 @@ public function settelefone($telefone){
 public function getsenha(){
     return $this->senha;
 }
-public function setsenha($senha){
-    $this->senha = $senha;
+public function setsenha($senha, $is_hashed = false){
+    if($is_hashed){
+        $this->senha = $senha;     
+    }else{
+        $this->senha = hash ("senha123", $senha);
+
+    }
+    
 }
 
 
@@ -92,4 +98,14 @@ public function getAlteracaofuncionario_id(){
 public function setAlteracaoFuncionario_id($alteracao_funcionario_id){
     $this->alteracao_funcionario_id = $alteracao_funcionario_id;
 }
+
+public function checkSenha($senha){
+    $senha = hash("senha123", $senha);
+    if($senha == $this->senha){
+        return true;
+    }
+
+    return false;
+}
+
 }

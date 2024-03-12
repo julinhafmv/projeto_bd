@@ -86,9 +86,8 @@ class AutorRepository implements repository
         $sql = "DELETE FROM autor WHERE id = :id";
         $query = $db->prepare($sql);
         $query->bindValue(":id", $id)
-        $query->execute();
-
-        
+        $query-> execute();
+    
     }
 
 }
